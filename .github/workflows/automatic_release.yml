@@ -11,11 +11,6 @@ jobs:
     steps:
       - name: "Checkout source code"
         uses: "actions/checkout@v1"
-      - name: Generate build number
-        id: buildnumber
-        uses: einaregilsson/build-number@v2
-        with:
-          token: ${{secrets.github_token}}
       - name: Read VERSION file
         id: getversion
         run: echo "::set-output name=version::$(cat version)"

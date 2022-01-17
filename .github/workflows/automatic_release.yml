@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'pubspec.yaml'
 
 jobs:
   release_new_tag:

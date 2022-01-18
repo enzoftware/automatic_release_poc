@@ -35,12 +35,13 @@ jobs:
           contents: |
             ${{ steps.getpubversion.outputs.pubversion }}
           write-mode: overwrite
-      - name: Push version file
+      - name: Commit version file
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action Bot"
           git add version
           git commit -m "Bump version"
-          "git push https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD:main"
+      - name: Push version
+        run: "git push https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD:main"  
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -31,7 +31,7 @@ jobs:
         if: steps.release.outputs.exit_code == 0
         uses: DamianReeves/write-file-action
         with:
-          path: version
+          path: ./version
           contents: |
             ${{steps.getversion.outputs.pubversion}}
           write-mode: overwrite

@@ -21,7 +21,7 @@ jobs:
         run: echo "::set-output name=pubversion::$(egrep '^version':' [0-9.]+' pubspec.yaml | awk '{print $2}')"
       - name: Release new version
         id: release
-        if: {{ steps.getpubversion.outputs.pubversion != steps.getfileversion.outputs.fileversion }}
+        if: steps.getpubversion.outputs.pubversion != steps.getfileversion.outputs.fileversion
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"

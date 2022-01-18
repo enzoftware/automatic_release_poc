@@ -1,11 +1,11 @@
-name: Auto-Tag Release
+name: Automatic Release
 
 on:
   push:
     branches:
       - main
     paths:
-      - 'pubspec.yaml'
+      - 'pubspec.yaml' # Only run the workflow if pubspec.yaml file has changes
 
 jobs:
   release_new_tag:
@@ -28,20 +28,24 @@ jobs:
           automatic_release_tag: ${{ steps.getpubversion.outputs.pubversion }}
           prerelease: false
       - name: Increase file version
+        id: increasefileversion
         if: steps.release.outputs.exit_code == 0
         uses: "DamianReeves/write-file-action@v1.0"
         with:
           path: version
           contents: |
             ${{ steps.getpubversion.outputs.pubversion }}
-          write-mode: overwrite
+          write-mode: overwrite # Automatically create the file or overwrite it if needed
       - name: Commit version file
+        id: commitversionfile
+        if: steps.increasefileversion.outputs.exit_code == 0
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action Bot"
           git add version
           git commit -m "Bump version"
       - name: Push version
+        if: steps.commitversionfile.outputs.exit_code == 0
         run: "git push https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD:main"  
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

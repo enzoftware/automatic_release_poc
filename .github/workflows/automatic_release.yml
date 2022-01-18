@@ -33,7 +33,7 @@ jobs:
         with:
           path: version
           contents: |
-            ${{steps.getversion.outputs.pubversion}}
+            ${{ steps.getpubversion.outputs.pubversion }}
           write-mode: overwrite
       - run: git config --local user.email "action@github.com"
       - run: git config --local user.name "GitHub Action"

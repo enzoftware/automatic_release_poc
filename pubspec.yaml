@@ -1,6 +1,6 @@
 name: automatic_release_poc
 description: A new Flutter package project.
-version: 1.0.12-rc
+version: 1.0.13-rc
 homepage:
 
 environment:

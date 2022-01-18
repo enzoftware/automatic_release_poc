@@ -25,13 +25,13 @@ jobs:
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: v${{ steps.getversion.outputs.pubversion }}
+          automatic_release_tag: ${{ steps.getpubversion.outputs.pubversion }}
           prerelease: false
       - name: Increase file version
         if: steps.release.outputs.exit_code == 0
         uses: "DamianReeves/write-file-action@v1.0"
         with:
-          path: ./version
+          path: version
           contents: |
             ${{steps.getversion.outputs.pubversion}}
           write-mode: overwrite

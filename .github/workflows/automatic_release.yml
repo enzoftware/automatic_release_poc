@@ -14,14 +14,14 @@ jobs:
       - name: "Checkout source code"
         uses: "actions/checkout@v1"
       - name: Get version from file
-        id: getpubversion
+        id: getfileversion
         run: echo "::set-output name=fileversion::$(cat version)"
       - name: Get version from pubspec.ysml
         id: getpubversion
         run: echo "::set-output name=pubversion::$(egrep '^version':' [0-9.]+' pubspec.yaml | awk '{print $2}')"
       - name: Release new version
         id: release
-        if: {{ steps.getversion.outputs.pubversion != steps.getversion.outputs.fileversion }}
+        if: {{ steps.getpubversion.outputs.pubversion != steps.getfileversion.outputs.fileversion }}
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"

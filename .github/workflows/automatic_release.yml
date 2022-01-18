@@ -29,7 +29,7 @@ jobs:
           prerelease: false
       - name: Increase file version
         if: steps.release.outputs.exit_code == 0
-        uses: "DamianReeves/write-file-action@latest"
+        uses: "DamianReeves/write-file-action@v1.0"
         with:
           path: ./version
           contents: |

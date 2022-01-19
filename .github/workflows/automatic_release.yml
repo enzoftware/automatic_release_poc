@@ -25,7 +25,8 @@ jobs:
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: ${{ steps.getpubversion.outputs.pubversion }}
+          automatic_release_tag: "latest"
+          title: ${{ steps.getpubversion.outputs.pubversion }}
           prerelease: false
       - name: Increase file version
         id: increasefileversion

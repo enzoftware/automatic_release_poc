@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout source code"
-        uses: "actions/checkout@v1"
+        uses: "actions/checkout@v2"
       - name: Get version from file
         id: getfileversion
         run: echo "::set-output name=fileversion::$(cat version)"
@@ -25,8 +25,7 @@ jobs:
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: latest
-          title: ${{ steps.getpubversion.outputs.pubversion }}
+          automatic_release_tag: ${{ steps.getpubversion.outputs.pubversion }}
           prerelease: false
       - name: Increase file version
         id: increasefileversion
@@ -45,8 +44,4 @@ jobs:
           git config --local user.name "GitHub Action Bot"
           git add version
           git commit -m "Bump version"
-      - name: Push version
-        if: steps.commitversionfile.outputs.exit_code == 0
-        run: "git push https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD:main"  
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          git push

@@ -1,0 +1,43 @@
+name: Automatic bump
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'pubspec.yaml' # Only run the workflow if pubspec.yaml file has changes
+
+jobs:
+  bump_version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout source code"
+        uses: "actions/checkout@v2"
+        with:
+          fetch-depth: 0
+      - name: Get version from file
+        id: getfileversion
+        run: echo "::set-output name=fileversion::$(cat version)"
+      - name: Get version from pubspec.ysml
+        id: getpubversion
+        run: echo "::set-output name=pubversion::$(egrep '^version':' [0-9.]+' pubspec.yaml | awk '{print $2}')"
+      - name: Increase file version
+        id: increasefileversion
+        if: steps.getpubversion.outputs.pubversion != steps.getfileversion.outputs.fileversion
+        uses: "DamianReeves/write-file-action@v1.0"
+        with:
+          path: version
+          contents: |
+            ${{ steps.getpubversion.outputs.pubversion }}
+          write-mode: overwrite # Automatically create the file or overwrite it if needed
+      - name: Commit version file
+        id: commitversionfile
+        if: steps.increasefileversion.outputs.exit_code == 0
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action Bot"
+          git add version
+          git commit -m "Bump version"
+          git push origin HEAD:${{github.head_ref}} --force
+        env:
+          ADMIN_TOKEN: "${{ secrets.ADMIN_TOKEN }}"

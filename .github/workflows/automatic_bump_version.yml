@@ -44,6 +44,7 @@ jobs:
           git config --local user.name "GitHub Action Bot"
           git add version
           git commit -m "Bump version"
-          git push origin HEAD:${GITHUB_REF##*/}
+          echo ${{github.head_ref}}
+          git push origin HEAD:${{github.head_ref}}
         env:
           ADMIN_TOKEN: "${{ secrets.ADMIN_TOKEN }}"

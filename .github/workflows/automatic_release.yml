@@ -26,7 +26,6 @@ jobs:
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: ${{ steps.getpubversion.outputs.pubversion }}
-          title: ${{ steps.getpubversion.outputs.pubversion }}
           prerelease: false
       - name: Increase file version
         id: increasefileversion
